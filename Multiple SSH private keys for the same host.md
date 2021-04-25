@@ -20,16 +20,16 @@
 
 2. To add keys automatically, modify your `~/.bashrc` file as following
 
-   ```
-   if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
-       agent_start
-       ssh-add
-   	ssh-add ~/.ssh/old_ed25519
-   elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
-       ssh-add
-   	ssh-add ~/.ssh/old_ed25591
-   fi
-   ```
+    ```
+    if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
+        agent_start
+        ssh-add
+        ssh-add ~/.ssh/old_ed25519
+    elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
+        ssh-add
+        ssh-add ~/.ssh/old_ed25591
+    fi
+    ```
 
 3. [Add the public key to GitHub account](https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
 
