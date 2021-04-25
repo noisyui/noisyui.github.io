@@ -1,6 +1,6 @@
-# Multiple SSH private keys for the same host
+# 1.Multiple SSH private keys for the same host
 
-1. [Generating a new SSH key and adding it to the ssh-agent](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [add the public key to GitHub account](https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account).
+1. [Generating a new SSH key and adding it to the ssh-agent](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
    ```
    $ ssh-keygen -t ed25519 -C "your_email@youremail.com"
@@ -11,14 +11,29 @@
    # you can delete all cached keys before
    $ ssh-add -D
    
-   # add keys as following. To add keys automatically, insert it into `~/.bashrc` file
+   # add keys as following
    $ ssh-add ~/.ssh/id_ed25519
    
    # you can check your saved keys
    $ ssh-add -l
    ```
-   
-2. modify the ssh config file `~/.ssh/config`
+
+2. To add keys automatically, modify your `~/.bashrc` file as following
+
+   ```
+   if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
+       agent_start
+       ssh-add
+   	ssh-add ~/.ssh/old_ed25519
+   elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
+       ssh-add
+   	ssh-add ~/.ssh/old_ed25591
+   fi
+   ```
+
+3. [Add the public key to GitHub account](https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
+
+4. Modify the ssh config file `~/.ssh/config`
 
    ```
    # Use project_1 or project_2 as the host to access the repository
@@ -39,14 +54,14 @@
        IdentitiesOnly yes
    ```
 
-3. [Testing your SSH connection](https://docs.github.com/en/github/authenticating-to-github/testing-your-ssh-connection)
+5. [Testing your SSH connection](https://docs.github.com/en/github/authenticating-to-github/testing-your-ssh-connection)
 
    ```
    $ ssh -T git@github.com
    $ ssh -T git@project_2
    ```
 
-4. now you are all set to clone your repositories, with the host configured in `~/.ssh/config` file
+6. Now you are all set to clone your repositories, with the host configured in `~/.ssh/config` file
 
    ```
    $ git clone git@project_2:org2/project2.git /path/to/project2
